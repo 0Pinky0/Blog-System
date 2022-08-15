@@ -18,6 +18,7 @@ class IndexView(View):
         cat_id = request.GET.get('cat_id', 1)
         page_num = request.GET.get('page_num', 1)
         page_size = request.GET.get('page_size', 10)
+
         # 判断分类id
         try:
             category = ArticleCategory.objects.get(id=cat_id)
@@ -76,7 +77,6 @@ class SearchView(View):
 
         search_id = request.GET.get('search-type', 0)
         mykey = request.GET.get('mykey', ' ')
-        print(mykey)
         if search_id == '0':
             articles = Article.objects.filter(
                 category=category,

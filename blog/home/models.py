@@ -29,7 +29,7 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     # 文章标题图
     avatar = models.ImageField(upload_to='article/%Y%m%d/', blank=True)
-    # 文章栏目的 “一对多” 外键
+    # 文章栏目的1:N外码
     category = models.ForeignKey(
         ArticleCategory,
         null=True,
@@ -39,20 +39,20 @@ class Article(models.Model):
     )
     # 文章标签
     tags = models.CharField(max_length=20, blank=True)
-    # 文章标题。
+    # 文章标题
     title = models.CharField(max_length=100, null=False, blank=False)
     # 概要
     sumary = models.CharField(max_length=200, null=False, blank=False)
-    # 文章正文。
+    # 文章内容
     content = models.TextField()
     # 浏览量
     total_views = models.PositiveIntegerField(default=0)
-    # 文章评论数
+    # 评论数
     comments_count = models.PositiveIntegerField(default=0)
-    # 文章创建时间。
+    # 创建时间
     # 参数 default=timezone.now 指定其在创建数据时将默认写入当前的时间
     created = models.DateTimeField(default=timezone.now)
-    # 文章更新时间。
+    # 更新时间
     # 参数 auto_now=True 指定每次数据更新时自动写入当前时间
     updated = models.DateTimeField(auto_now=True)
 
@@ -65,8 +65,7 @@ class Article(models.Model):
         verbose_name = '文章管理'
         verbose_name_plural = verbose_name
 
-    # 函数 __str__ 定义当调用对象的 str() 方法时的返回值内容
-    # 它最常见的就是在Django管理后台中做为对象的显示值。因此应该总是为 __str__ 返回一个友好易读的字符串
+    # 当调用对象的 str() 方法时的返回值内容
     def __str__(self):
         # 将文章标题返回
         return self.title
@@ -87,7 +86,7 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.article.title
+        return self.content[:10]
 
     class Meta:
         db_table = 'tb_comment'

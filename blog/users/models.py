@@ -1,15 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from concurrency.fields import IntegerVersionField
 
 
 # Create your models here.
 class User(AbstractUser):
+    # 乐观锁：版本字段
+    version = IntegerVersionField()
     # 电话号码字段
-    # unique 为唯一性字段
+    # unique为唯一约束，
     mobile = models.CharField(max_length=20, unique=True, blank=True)
 
-    # 头像
-    # upload_to为保存到响应的子目录中
+    # 用户头像
+    # upload_to为保存到相应的子目录中
     avatar = models.ImageField(upload_to='avatar/%Y%m%d/', blank=True)
 
     # 个人简介
@@ -28,4 +31,4 @@ class User(AbstractUser):
         verbose_name_plural = verbose_name  # Admin后台显示
 
     def __str__(self):
-        return self.mobile
+        return self.username
